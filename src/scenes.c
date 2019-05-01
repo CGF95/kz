@@ -849,7 +849,7 @@ struct kz_scene scenes[] = {
             "path to snowhead",
             "unknown",
             "path to mountain village",
-            "unknown",
+            "after defeating goht",
             "owl statue",
         },
     },

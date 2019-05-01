@@ -124,6 +124,15 @@ static void kz_main(void) {
             uint16_t rupee_cap[] = { 99, 200, 500, 500 };
             z2_file.rupees = rupee_cap[z2_file.wallet_upgrade];
         }
+        if(kz.cheats & (1 << CHEAT_DEFAULT_SPEED)){
+            z2_file.timespeed = 0;
+        }
+        if(kz.cheats & (1 << CHEAT_ISOT_SPEED)){
+            z2_file.timespeed = -2;
+        }
+        if(kz.cheats & (1 << CHEAT_TIME_STOPPED)){
+            z2_file.timespeed = -3;
+        }
     }
 
     /* collision view */

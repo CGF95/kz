@@ -560,7 +560,7 @@ struct menu *create_inventory_menu(){
     {
         quest_status.selected_item = menu_add_button(&quest_status,0,0,"return",menu_return,NULL);
         quest_status.callback_proc = quest_status_callback_proc;
-        //menu_set_cell(&quest_status,16,16);
+        menu_set_cell(&quest_status,12,9);
         
         int x = 0;
         int y = 1;
@@ -584,12 +584,12 @@ struct menu *create_inventory_menu(){
         menu_add_number_input(&quest_status,15,y,update_stray_fairies,NULL,16,2,&stray_fairies,1);
         y++;
         menu_add_bit_switch(&quest_status,0,y,&dungeon_items,1,0x01,set_dungeon_item,&dungeon_items_tex,16,16,0,1,"boss key");
-        menu_add_bit_switch(&quest_status,1,y,&dungeon_items,1,0x02,set_dungeon_item,&dungeon_items_tex,16,16,1,1,"compass");
-        menu_add_bit_switch(&quest_status,2,y,&dungeon_items,1,0x04,set_dungeon_item,&dungeon_items_tex,16,16,2,1,"map");
+        menu_add_bit_switch(&quest_status,2,y,&dungeon_items,1,0x02,set_dungeon_item,&dungeon_items_tex,16,16,1,1,"compass");
+        menu_add_bit_switch(&quest_status,4,y,&dungeon_items,1,0x04,set_dungeon_item,&dungeon_items_tex,16,16,2,1,"map");
         y++;
         for(int i=0;i<sizeof(owl_data_table)/sizeof(*owl_data_table);i++){
-            x = i % 5;
-            if(i % 5 == 0) y++;
+            x = i % 10;
+            if(i % 10 == 0) y++;
             struct menu_item *item = menu_add_bit_switch(&quest_status,x,y,&z2_file.owls_hit,2,owl_data_table[i].bitmask,NULL,&owl_icon_texture,16,8,0,1,owl_data_table[i].tooltip);
             set_item_offset(item,0,4);
         }
@@ -599,20 +599,18 @@ struct menu *create_inventory_menu(){
             x++;
         }
         menu_add_bit_switch(&quest_status,x,y,&z2_file.quest_status,4,bombers_notebook_table.bitmask,NULL,&notebook_texture,16,16,0,1,bombers_notebook_table.tooltip);
-        x=0;
         y++;
         for(int i=0;i<sizeof(song_data_table)/sizeof(*song_data_table);i++){
             x = i % 5;
             if(i % 5 == 0) y++;
 
-            struct menu_item *item = menu_add_bit_switch(&quest_status,x,y,&z2_file.quest_status,4,song_data_table[i].bitmask,NULL,&note_texture,10,16,0,0,song_data_table[i].tooltip);
+            struct menu_item *item = menu_add_bit_switch(&quest_status,x,y,&z2_file.quest_status,4,song_data_table[i].bitmask,NULL,&note_texture,8,12,0,0,song_data_table[i].tooltip);
             struct bit_switch_data *data = item->data;
             data->color = song_data_table[i].color;
             data->off_color = 0x808080FF;
-            set_item_offset(item,3,0);
-            
+            set_item_offset(item,4,3);
         }
-        tooltip = menu_add(&quest_status,0,y+1,"");
+        tooltip = menu_add(&quest_status,0,y+2,"");
     }
     return &menu;
 }

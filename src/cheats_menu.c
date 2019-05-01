@@ -19,7 +19,10 @@ static struct cheat_item cheat_table[] = {
     { CHEAT_BLAST_MASK, "no blast mask cooldown" },
     { CHEAT_RAZOR_SWORD, "unbreakable razor sword" },
     { CHEAT_RESTRICTION, "no item restriction" },
-    { CHEAT_ISG, "isg" }
+    { CHEAT_ISG, "isg" },
+    { CHEAT_ISOT_SPEED, "isot time speed" },
+    { CHEAT_DEFAULT_SPEED, "default time speed" },
+    { CHEAT_TIME_STOPPED, "stop time" },
 };
 
 struct menu *create_cheats_menu(){

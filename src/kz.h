@@ -22,6 +22,9 @@ enum cheats {
     CHEAT_RESTRICTION,
     CHEAT_ISG,
     CHEAT_RUPEES,
+    CHEAT_ISOT_SPEED,
+    CHEAT_DEFAULT_SPEED,
+    CHEAT_TIME_STOPPED,
 };
 
 typedef struct  {
@@ -35,7 +38,7 @@ typedef struct  {
     struct settings        *settings;
     _Bool                   menu_active;
     size_t test;
-    
+    int32_t                 frames_queued;
 } kz_ctxt_t;
 
 extern kz_ctxt_t kz;
@@ -45,5 +48,6 @@ struct menu *create_inventory_menu();
 struct menu *create_scene_menu();
 struct menu *create_watches_menu();
 struct menu *create_cheats_menu();
+
 
 #endif
