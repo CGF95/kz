@@ -7,7 +7,21 @@ struct command kz_commands[COMMAND_CNT] = {
     {"turbo",       COMMAND_HOLD,   BUTTON_D_DOWN,              command_turbo},
     {"void out",    COMMAND_PRESS,  BUTTON_D_LEFT | BUTTON_A,   command_void},
     {"break free",  COMMAND_PRESS,  BUTTON_D_RIGHT | BUTTON_L,  command_break},
+    {"current day", COMMAND_PRESS,  BUTTON_B,                   command_day_mgmt},
 };
+
+void command_day_mgmt(){
+    z2_input_t input = z2_game.common.input[0];
+    if(input.pad_pressed & BUTTON_D_LEFT){
+        z2_file.day = 1;
+    }
+    if(input.pad_pressed & BUTTON_D_UP){
+        z2_file.day = 2;
+    }
+    if(input.pad_pressed & BUTTON_D_RIGHT){
+        z2_file.day = 3;
+    }    
+}
 
 void command_break(){
     z2_game.cutscene_state = 0x03;
