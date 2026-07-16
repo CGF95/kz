@@ -1,18 +1,19 @@
 PACKAGE            ?= $(NAME)
-PACKAGE_URL        ?= github.com/krimtonz/kz
+PACKAGE_URL        ?= github.com/cgf95/kz
 ifeq ($(origin PACKAGE_VERSION), undefined)
 PACKAGE_VERSION	   := $(shell git describe --tags --dirty 2>/dev/null)
 ifeq ('$(PACKAGE_VERSION)', '')
-PACKAGE_VERSION		= unknown version
+PACKAGE_VERSION		= cgf edition
 endif
 endif
-target              = mips64
+target              = mips64-ultra-elf
+AS                  = $(target)-as
 CC                  = $(target)-gcc
 LD                  = $(target)-g++
-AS                  = $(target)-gcc -x assembler-with-cpp
+CCAS                = $(target)-gcc -x assembler-with-cpp
 OBJCOPY             = $(target)-objcopy
-GRC                 = grc
-GENHOOKS            = CPPFLAGS='$(subst ','\'',$(CPPFLAGS))' ./genhooks
+GRC                 = AS='$(AS)' grc
+GENHOOKS            = TOOL_PREFIX='$(target)' CPPFLAGS='$(subst ','\'',$(CPPFLAGS))' ./genhooks
 CFILES              = *.c
 SFILES              = *.S
 RESFILES            = *.png
@@ -29,11 +30,11 @@ NAME                = kz
 RESDESC             = res.json
 
 ADDRESS_FULL        = 0x80800060
-ADDRESS_VC			= 0x8003DF60
+ADDRESS_VC					= 0x8003DF60
 ADDRESS_LITE        = 0x8003DF60
 ADDRESS_LDR         = 0x80080000
 ALL_CFLAGS          = -Iinclude -c -MMD -MP -std=gnu11 -Wall -ffunction-sections -fdata-sections -fno-reorder-blocks -mno-check-zero-division $(CFLAGS)
-ALL_CPPFLAGS        = -DPACKAGE=$(PACKAGE) -DPACKAGE_URL=$(PACKAGE_URL) -DPACKAGE_VERSION=$(PACKAGE_VERSION) -DF3DEX_GBI_2 -DHB_DBG $(CPPFLAGS)
+ALL_CPPFLAGS        = -DPACKAGE=$(PACKAGE) -DPACKAGE_URL=$(PACKAGE_URL) -DPACKAGE_VERSION='$(PACKAGE_VERSION)' -DF3DEX_GBI_2 -DHB_DBG $(CPPFLAGS)
 ALL_LDFLAGS         = -T gl-n64.ld -L$(LIBDIR) -nostartfiles -specs=nosys.specs -Wl,--gc-sections $(LDFLAGS)
 ALL_LIBS            = $(LIBS)
 
@@ -66,6 +67,8 @@ KZ-LITE-NZSJ10      = $(OBJ-kz-lite-NZSJ10) $(ELF-kz-lite-NZSJ10) $(HOOKS-kz-lit
 KZ-NZSE             = $(KZ-FULL-NZSE) $(KZ-VC-NZSE) $(KZ-LITE-NZSE)
 KZ-NZSJ             = $(KZ-FULL-NZSJ) $(KZ-VC-NZSJ) $(KZ-LITE-NZSJ)
 KZ-NZSJ10           = $(KZ-FULL-NZSJ10) $(KZ-VC-NZSJ10) $(KZ-LITE-NZSJ10)
+
+KZ                  = $(KZ_FULL) $(KZ_VC) $(KZ_LITE)
 
 VC                  = $(foreach v,$(VC_VERSIONS),kz-vc-$(v))
 
@@ -113,7 +116,7 @@ $$(CLEAN-$(1))      :
 $$(COBJ-$(1))       :   $$(OBJDIR-$(1))/%.o: $$(SRCDIR-$(1))/% | $$(OBJDIR-$(1))
 	$(CC) $$(ALL_CPPFLAGS) $$(ALL_CFLAGS) $$< -o $$@
 $$(SOBJ-$(1))       :   $$(OBJDIR-$(1))/%.o: $$(SRCDIR-$(1))/% | $$(OBJDIR-$(1))
-	$(AS) -c -MMD -MP $$(ALL_CPPFLAGS) $$< -o $$@
+	$(CCAS) -c -MMD -MP $$(ALL_CPPFLAGS) $$< -o $$@
 $$(RESOBJ-$(1))     :   $$(OBJDIR-$(1))/%.o: $$(RESDIR-$(1))/% | $$(OBJDIR-$(1))
 	$(GRC) $$< -d $(RESDESC) -o $$@
 $$(ELF-$(1))        :   $$(OBJ-$(1)) | $$(BINDIR-$(1))
@@ -144,7 +147,7 @@ $$(VCDIR-$(1))		:
 	mkdir -p $$@
 
 $$(HOMEBOY-$(1))    : $$(VCDIR-$(1))
-	cd $(HOMEBOYDIR) && CPPFLAGS="-DHB_DBG -DHB_HEAP -DHB_FAT -DHB_N64VCMEM $(HBCPPFLAGS)" make bin/hb-$(3)/homeboy.bin
+	cd $(HOMEBOYDIR) && CPPFLAGS="-DHB_DBG -DHB_HEAP -DHB_FAT -DHB_N64VCMEM -DHB_NO_CPUEXECUTECALL_HOOK $(HBCPPFLAGS)" make ADDRESS=0x90000800 CFLAGS=-mlongcall bin/hb-$(3)/homeboy.bin
 	cp $(HOMEBOYDIR)/bin/hb-$(3)/homeboy.bin $$@
 endef
 

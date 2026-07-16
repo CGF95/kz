@@ -9,6 +9,12 @@
 #include <n64.h>
 #include <stdarg.h>
 
+/* gbi.h defines G_SIZ_BITS as (4 << siz); the variable shift (sllv) is
+   miscompiled by the Wii VC recompiler, garbling textures. Use a lookup
+   table instead. */
+#undef G_SIZ_BITS
+#define G_SIZ_BITS(siz) ((int[]){4, 8, 16, 32}[gI_(siz)])
+
 #define SCREEN_WIDTH    320
 #define SCREEN_HEIGHT   240
 

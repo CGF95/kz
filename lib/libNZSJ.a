@@ -120,3 +120,6 @@ z2_disp                     = 0x8020A2B0;
 z2_ctxt                     = 0x803E6FB0;
 z2_game                     = z2_ctxt;
 z2_link                     = 0x80400260;
+z2_cs_scene_lists           = 0x801F5220;
+z2_cs_text_state            = 0x801B61F4;
+z2_horse_state              = 0x801B8B6C;

@@ -4,8 +4,8 @@
 #include "z2.h"
 
 typedef struct {
-    float pitch;
-    float yaw;
+  float pitch;
+  float yaw;
 } sph_coord_t;
 
 void geo_to_vec3f(sph_coord_t *geo, z2_xyzf_t *vec);

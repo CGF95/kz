@@ -13,3 +13,6 @@ vc/obj/
 *.bak
 patch/gsc/kz-*/hooks.gsc
 patch/dol
+.claude
+build/*.wad
+build/common-key.bin

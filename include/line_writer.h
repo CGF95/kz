@@ -4,11 +4,11 @@
 #include "z2.h"
 
 typedef struct {
-    Gfx *p;
-    Gfx *d;
-    Vtx vtx[32];
-    Gfx *vtx_cmd;
-    int vtx_cnt;
+  Gfx *p;
+  Gfx *d;
+  Vtx vtx[32];
+  Gfx *vtx_cmd;
+  int vtx_cnt;
 } line_writer_t;
 
 void init_line_gfx(Gfx **gfx_p, Gfx **gfx_d, _Bool xlu);

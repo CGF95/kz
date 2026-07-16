@@ -4,13 +4,13 @@
 #include "z2.h"
 
 typedef struct {
-    Gfx        *p;
-    Gfx        *d;
-    Vtx         v[30];
-    Gfx        *vtx_cmd;
-    Gfx        *tri_cmd;
-    int         vtx_cnt;
-    uint32_t    prev_color;
+  Gfx *p;
+  Gfx *d;
+  Vtx v[30];
+  Gfx *vtx_cmd;
+  Gfx *tri_cmd;
+  int vtx_cnt;
+  uint32_t prev_color;
 } poly_writer_t;
 
 void init_poly_list(Gfx **poly_p, Gfx **poly_d, _Bool xlu, _Bool decal);

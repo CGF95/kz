@@ -5,14 +5,14 @@
 
 #ifndef LITE
 struct item_map_row {
-    int8_t     *slot;
-    int8_t      item;
+  int8_t *slot;
+  int8_t item;
 };
 #else
 struct item_map_row {
-    char       *tooltip;
-    int8_t     *slot;
-    int8_t      item;
+  char *tooltip;
+  int8_t *slot;
+  int8_t item;
 };
 #endif
 

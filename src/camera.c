@@ -1,58 +1,58 @@
+#include "hb_heap.h"
+#include "input.h"
+#include "kz.h"
+#include "poly_writer.h"
+#include "vec_math.h"
+#include "z2.h"
 #include <math.h>
 #include <mips.h>
-#include "kz.h"
-#include "z2.h"
-#include "input.h"
-#include "vec_math.h"
-#include "hb_heap.h"
-#include "poly_writer.h"
 
 void kz_camera_calc(z2_camera_t *camera) {
-    sph_coord_t *geo = &kz.cam_sph;
+  sph_coord_t *geo = &kz.cam_sph;
 
-    if(input_pressed_raw() & BUTTON_Z) {
-        camera->roll += input_x() * 20;
-    } else {
-        geo->yaw -= input_x() / 500.0f;
-    }
-    geo->pitch += input_y() / 500.0f;
+  if (input_pressed_raw() & BUTTON_Z) {
+    camera->roll += input_x() * 20;
+  } else {
+    geo->yaw -= input_x() / 500.0f;
+  }
+  geo->pitch += input_y() / 500.0f;
 
-    if(geo->pitch < -((M_PI / 2.0f) + 0.02f) ){
-        geo->pitch = -((M_PI / 2.0f) + 0.02f);
-    } else if(geo->pitch > (M_PI / 2.0f) - 0.02f){
-        geo->pitch = (M_PI / 2.0f) - 0.02f;
-    }
+  if (geo->pitch < -((M_PI / 2.0f) + 0.02f)) {
+    geo->pitch = -((M_PI / 2.0f) + 0.02f);
+  } else if (geo->pitch > (M_PI / 2.0f) - 0.02f) {
+    geo->pitch = (M_PI / 2.0f) - 0.02f;
+  }
 
-    z2_xyzf_t move, strafe;
-    geo_to_vec3f(geo, &move);
-    sph_coord_t shift;
-    shift.pitch = 0.0f;
-    shift.yaw = geo->yaw - (M_PI / 2.0f);
-    geo_to_vec3f(&shift, &strafe);
+  z2_xyzf_t move, strafe;
+  geo_to_vec3f(geo, &move);
+  sph_coord_t shift;
+  shift.pitch = 0.0f;
+  shift.yaw = geo->yaw - (M_PI / 2.0f);
+  geo_to_vec3f(&shift, &strafe);
 
-    float multiplier = (input_pressed_raw() & BUTTON_Z) ? 2.0f : 1.0f;
+  float multiplier = (input_pressed_raw() & BUTTON_Z) ? 2.0f : 1.0f;
 
-    if(input_pressed_raw() & BUTTON_C_UP){
-        vec3f_scalar_mul(&move, -45.0f * multiplier, &move);
-        vec3f_add(&kz.kz_at, &move, &kz.kz_at);
-    }
-    if(input_pressed_raw() & BUTTON_C_DOWN){
-        vec3f_scalar_mul(&move, 45.0f * multiplier, &move);
-        vec3f_add(&kz.kz_at, &move, &kz.kz_at);
-    }
-    if(input_pressed_raw() & BUTTON_C_LEFT){
-        vec3f_scalar_mul(&strafe, 15.0f * multiplier, &strafe);
-        vec3f_add(&kz.kz_at, &strafe, &kz.kz_at);
-    }
-    if(input_pressed_raw() & BUTTON_C_RIGHT){
-        vec3f_scalar_mul(&strafe, -15.0f * multiplier, &strafe);
-        vec3f_add(&kz.kz_at, &strafe, &kz.kz_at);
-    }
+  if (input_pressed_raw() & BUTTON_C_UP) {
+    vec3f_scalar_mul(&move, -45.0f * multiplier, &move);
+    vec3f_add(&kz.kz_at, &move, &kz.kz_at);
+  }
+  if (input_pressed_raw() & BUTTON_C_DOWN) {
+    vec3f_scalar_mul(&move, 45.0f * multiplier, &move);
+    vec3f_add(&kz.kz_at, &move, &kz.kz_at);
+  }
+  if (input_pressed_raw() & BUTTON_C_LEFT) {
+    vec3f_scalar_mul(&strafe, 15.0f * multiplier, &strafe);
+    vec3f_add(&kz.kz_at, &strafe, &kz.kz_at);
+  }
+  if (input_pressed_raw() & BUTTON_C_RIGHT) {
+    vec3f_scalar_mul(&strafe, -15.0f * multiplier, &strafe);
+    vec3f_add(&kz.kz_at, &strafe, &kz.kz_at);
+  }
 
-    z2_xyzf_t geo_vec;
+  z2_xyzf_t geo_vec;
 
-    geo_to_vec3f(geo, &geo_vec);
-    vec3f_add(&kz.kz_at, &geo_vec, &kz.kz_eye);
+  geo_to_vec3f(geo, &geo_vec);
+  vec3f_add(&kz.kz_at, &geo_vec, &kz.kz_eye);
 }
 
 /*
@@ -148,12 +148,12 @@ void camera_draw(void) {
     }
 
     gSPSetGeometryMode(cam_gfx_p++, G_CULL_BACK);
-    gSPMatrix(cam_gfx_p++, gDisplayListData(&cam_gfx_d, m), G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_PUSH);
-    gSPDisplayList(cam_gfx_p++, draw_arrow_tris);
+    gSPMatrix(cam_gfx_p++, gDisplayListData(&cam_gfx_d, m), G_MTX_LOAD |
+G_MTX_MODELVIEW | G_MTX_PUSH); gSPDisplayList(cam_gfx_p++, draw_arrow_tris);
     gSPPopMatrix(cam_gfx_p++, G_MTX_MODELVIEW);
 
-    gSPMatrix(cam_gfx_p++, gDisplayListData(&cam_gfx_d, mcam), G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_PUSH);
-    gSPDisplayList(cam_gfx_p++, draw_cam_tris);
+    gSPMatrix(cam_gfx_p++, gDisplayListData(&cam_gfx_d, mcam), G_MTX_LOAD |
+G_MTX_MODELVIEW | G_MTX_PUSH); gSPDisplayList(cam_gfx_p++, draw_cam_tris);
     gSPPopMatrix(cam_gfx_p++, G_MTX_MODELVIEW);
     gSPClearGeometryMode(cam_gfx_p++, G_CULL_BACK);
     gSPEndDisplayList(cam_gfx_p++);
